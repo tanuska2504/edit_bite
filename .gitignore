@@ -30,3 +30,29 @@
 *.exe
 *.out
 *.app
+extern _lstrlenA@4
+extern _WriteConsoleA@20
+extern _GetStdHandle@4
+ 
+global conout
+ 
+section .text
+conout:
+    mov edi, [esp+0x04]
+    ;получить хэндл вывода
+    push dword -11
+    call _GetStdHandle@4
+    mov ebx, eax
+    push edi
+    call _lstrlenA@4
+    mov edx, eax
+    
+    ;вывод на экран
+    push dword 0
+    push eax
+    push edx
+    push edi
+    push ebx
+    call _WriteConsoleA@20
+        
+    ret 4
